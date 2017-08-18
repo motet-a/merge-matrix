@@ -1,0 +1,27 @@
+<% include util.html %>
+
+<table>
+
+    <thead>
+        <tr>
+            <th></th>
+
+            <% for (const a of $.matrix.indices) { %>
+                <th><% $.linkify(a) %></th>
+            <% } %>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% for (const a of $.matrix.indices) { %>
+            <tr>
+                <th><% $.linkify(a) %></th>
+
+                <% for (const b of $.matrix.indices) { %>
+                    <%- include('matrix-cell.html', {a, b}) %>
+                <% } %>
+            </tr>
+        <% } %>
+    </tbody>
+
+</table>

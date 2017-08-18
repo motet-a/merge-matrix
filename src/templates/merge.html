@@ -1,0 +1,45 @@
+<%- include util.html %>
+
+<%- include('top.html') %>
+
+<h1>
+    <%= $.merge.code ? '✗' : '✓' %>
+
+    Merge <% $.linkify($.merge.b) %> into <% $.linkify($.merge.a) %>
+</h1>
+
+<p>
+    Exit status code:
+    <%= $.merge.code || 0 %>,
+    <%= $.merge.code ? 'failed' : 'successful' %>
+</p>
+
+<p>
+    <a href="<%= $.compareUrl($.merge.aSha, $.merge.bSha) %>">
+        Compare on GitHub
+    </a>
+</p>
+
+<p>
+    Target: <% $.linkify($.merge.b) %> at commit <% $.linkify($.merge.bSha) %>
+</p>
+
+<p>
+    Base: <% $.linkify($.merge.a) %> at commit <% $.linkify($.merge.aSha) %>
+</p>
+
+<h2>stdout</h2>
+<% if ($.merge.stdout) { %>
+    <pre><%= $.merge.stdout %></pre>
+<% } else { %>
+    <i>no output</i>
+<% } %>
+
+<h2>stderr</h2>
+<% if ($.merge.stderr) { %>
+    <pre><%= $.merge.stderr %></pre>
+<% } else { %>
+    <i>no output</i>
+<% } %>
+
+<%- include('bottom.html') %>

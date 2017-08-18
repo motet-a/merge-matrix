@@ -1,0 +1,27 @@
+<% include util.html %>
+
+<%- include('top.html') %>
+
+<h1>Merge matrix</h1>
+
+<% if ($.matrix) { %>
+    <%- include('matrix-table.html') %>
+<% } else { %>
+    No results.
+<% } %>
+
+<p>
+    <% const {ignore} = $.config %>
+
+    Ignored patterns:
+
+    <% if (ignore.length) { %>
+        <% for (const item of ignore) { %>
+            <% $.linkify(item) %>
+        <% } %>
+    <% } else { %>
+        none
+    <% } %>
+</p>
+
+<%- include('bottom.html') %>

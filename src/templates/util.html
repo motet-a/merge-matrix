@@ -1,0 +1,19 @@
+<%
+$.linkify = text => {
+    const url = $.getNameUrl(text)
+
+    if (!url) {
+        %><%= text %><%
+        return
+    }
+
+    const title = text.startsWith('#') ? $.matrix.getKeyTitle(text) : ''
+
+    %>
+        <a href="<%= url %>"
+           title="<%= title %>">
+            <%= text %>
+        </a>
+    <%
+}
+%>

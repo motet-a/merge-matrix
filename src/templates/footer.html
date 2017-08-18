@@ -1,0 +1,13 @@
+<footer>
+    Status:
+    <% if ($.detectConflicts.running) { %>
+        detecting conflicts…
+    <% } else { %>
+        idle
+    <% } %>
+
+    <% if ($.matrix && $.matrix.timestamp) { %>
+        —
+        <%= (new Date($.matrix.timestamp)).toString() %>
+    <% } %>
+</footer>
