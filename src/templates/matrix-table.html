@@ -18,7 +18,7 @@
                 <th><% $.linkify(a) %></th>
 
                 <% for (const b of $.matrix.indices) { %>
-                    <%- include('matrix-cell.html', {a, b}) %>
+                    <% include matrix-cell.html %>
                 <% } %>
             </tr>
         <% } %>
