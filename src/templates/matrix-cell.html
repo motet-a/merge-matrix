@@ -3,7 +3,7 @@
 <% const merge = matrix.get(a, b) %>
 
 <% if (!merge) { %>
-    <td class="empty"></td>
+    <td class="empty">·</td>
 <% } else { %>
     <td class="<%= merge.code ? 'failed' : 'successful' %>"
         style="<%= $.getCellStyle(merge) %>">

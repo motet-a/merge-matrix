@@ -34,9 +34,17 @@ pre {
     overflow-x: auto;
 }
 
+td.empty {
+    text-align: center;
+}
+
 tr:hover td.successful,
 tr:hover td.empty {
     background: #eee;
+}
+
+td {
+    padding: 0;
 }
 
 td>a {
@@ -46,16 +54,16 @@ td>a {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 2rem;
-    width: 2rem;
+    height: 2.5rem;
+    width: 2.5rem;
 }
 
 thead th {
     font-size: 0;
     line-height: 0;
     max-width: 0;
-    height: 2rem;
-    width: 2rem;
+    height: 2.5rem;
+    width: 2.5rem;
 }
 
 thead th a {
