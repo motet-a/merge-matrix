@@ -9,6 +9,7 @@ const filterMergeResult = merge => {
         aSha: merge.aSha,
         bSha: merge.bSha,
         code: merge.code,
+        conflicts: merge.conflicts,
     }
 }
 
@@ -63,9 +64,11 @@ class Matrix {
     get indices() {
         assert(this._pulls)
 
-        return this.pulls
-                   .map(p => '#' + p.number)
-                   .concat(this.branchNames)
+        return this.branchNames
+                   .concat(
+                       this.pulls
+                           .map(p => '#' + p.number)
+                   )
     }
 
     get matrix() {

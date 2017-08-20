@@ -14,6 +14,12 @@
     <%= $.merge.code ? 'failed' : 'successful' %>
 </p>
 
+<% if ($.merge.conflicts) { %>
+    <p>
+        <%= $.merge.conflicts.lineCount %> lines are conflicting.
+    </p>
+<% } %>
+
 <p>
     <a href="<%= $.compareUrl($.merge.aSha, $.merge.bSha) %>">
         Compare on GitHub
@@ -31,13 +37,6 @@
 <h2>stdout</h2>
 <% if ($.merge.stdout) { %>
     <pre><%= $.merge.stdout %></pre>
-<% } else { %>
-    <i>no output</i>
-<% } %>
-
-<h2>stderr</h2>
-<% if ($.merge.stderr) { %>
-    <pre><%= $.merge.stderr %></pre>
 <% } else { %>
     <i>no output</i>
 <% } %>

@@ -62,7 +62,7 @@ const mergePullRequests = async (a, b) => {
     try {
         mergeResult = await git.merge(bSha, aSha, newBranchName)
     } catch (error) {
-        if (!error.killed) {
+        if (!error.stderr && error.stdout && error.conflicts) {
             mergeResult = error
         } else {
             throw error
@@ -103,11 +103,9 @@ const detectConflicts = async () => {
                 b: typeof b === 'string' ? b : '#' + b.number,
                 aSha: result.aSha,
                 bSha: result.bSha,
-                killed: !!mergeResult.killed,
                 code: mergeResult.code || 0,
-                signal: mergeResult.signal || null,
                 stdout: mergeResult.stdout.slice(0, MAX_LOG_SIZE),
-                stderr: mergeResult.stderr.slice(0, MAX_LOG_SIZE),
+                conflicts: mergeResult.conflicts,
             })
         }
     }

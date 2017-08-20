@@ -12,9 +12,26 @@ $.linkify = text => {
 
     %>
         <a href="<%= url %>"
-           title="<%= title %>">
-            <%= text %>
-        </a>
+           title="<%= title %>"><%= text %></a>
     <%
+}
+
+const clamp = (n, min, max) =>
+    Math.min(Math.max(n, min), max)
+
+$.getCellStyle = merge => {
+    if (!merge.conflicts) {
+        return ''
+    }
+
+    const backgroundOpacity = clamp(
+        Math.log(merge.conflicts.lineCount) / 6,
+        0, 1
+    )
+
+    const foreground = backgroundOpacity > 0.4 ? 'white' : '#444'
+
+    return 'background: rgba(244, 83, 66, ' + backgroundOpacity + ');' +
+           'color: ' + foreground + ';'
 }
 %>

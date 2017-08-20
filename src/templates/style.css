@@ -34,24 +34,13 @@ pre {
     overflow-x: auto;
 }
 
-td.failed {
-    background: #f45342;
-}
-
-td.successful {
-    background: #8ace3b;
-}
-
-tr:hover td.successful {
-    background: #83bf3d;
-}
-
-tr:hover td.failed {
-    background: #ec5444;
+tr:hover td.successful,
+tr:hover td.empty {
+    background: #eee;
 }
 
 td>a {
-    font-size: 0;
+    color: inherit;
     font-weight: normal;
     text-decoration: none;
     display: flex;

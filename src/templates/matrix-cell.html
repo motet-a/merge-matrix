@@ -5,10 +5,11 @@
 <% if (!merge) { %>
     <td class="empty"></td>
 <% } else { %>
-    <td class="<%= merge.code ? 'failed' : 'successful' %>">
+    <td class="<%= merge.code ? 'failed' : 'successful' %>"
+        style="<%= $.getCellStyle(merge) %>">
         <a href="/merge/<%= merge.aSha %>/<%= merge.bSha %>"
            title="<%= merge.a + ' — ' + $.matrix.getKeyTitle(a) + '\n' + merge.b + ' — ' + $.matrix.getKeyTitle(b) %>">
-            <%= merge.code ? '✗' : '✓' %>
+            <%= merge.conflicts ? merge.conflicts.lineCount : '' %>
         </a>
     </td>
 <% } %>

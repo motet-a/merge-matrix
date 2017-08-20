@@ -66,16 +66,27 @@ router
 
 app.use(router.routes())
 
+let server
+
+const stop = () => {
+    if (server) {
+        server.close(() => {
+            server = null
+            stop()
+        })
+        return
+    }
+
+    process.exit()
+}
+
+process.on('SIGTERM', stop)
+process.on('SIGINT', stop)
+
 git
     .bootstrap()
     .then(() => {
-        const server = app.listen(8000)
-
-        const stop = () =>
-            server.close()
-
-        process.on('SIGTERM', stop)
-        process.on('SIGINT', stop)
+        server = app.listen(8000)
     })
     .then(cron.bootstrap)
     .then(cron.start)
