@@ -34,6 +34,32 @@
     Base: <% $.linkify($.merge.a) %> at commit <% $.linkify($.merge.aSha) %>
 </p>
 
+<% if ($.merge.conflicts) { %>
+    <% const {status} = $.merge.conflicts %>
+
+    <h2>Conflicting files</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Path</th>
+                <th>Conflict reason</th>
+                <th>Conflicting line count</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for (const file of status) { %>
+                <tr>
+                    <td><%= file.path %></td>
+                    <td><%= file.reason %></td>
+                    <td><%= file.lineCount %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% } %>
+
 <h2>stdout</h2>
 <% if ($.merge.stdout) { %>
     <pre><%= $.merge.stdout %></pre>

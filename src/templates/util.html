@@ -25,8 +25,8 @@ $.getCellStyle = merge => {
     }
 
     const backgroundOpacity = clamp(
-        Math.log(merge.conflicts.lineCount) / 6,
-        0, 1
+        Math.log(merge.conflicts.lineCount / 10) / 3,
+        0.05, 1
     )
 
     const foreground = backgroundOpacity > 0.4 ? 'white' : '#444'

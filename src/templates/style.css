@@ -34,20 +34,20 @@ pre {
     overflow-x: auto;
 }
 
-td.empty {
+.matrix td.empty {
     text-align: center;
 }
 
-tr:hover td.successful,
-tr:hover td.empty {
+.matrix tr:hover td.successful,
+.matrix tr:hover td.empty {
     background: #eee;
 }
 
-td {
+.matrix td {
     padding: 0;
 }
 
-td>a {
+.matrix td>a {
     color: inherit;
     font-weight: normal;
     text-decoration: none;
@@ -58,7 +58,7 @@ td>a {
     width: 2.5rem;
 }
 
-thead th {
+.matrix thead th {
     font-size: 0;
     line-height: 0;
     max-width: 0;
@@ -66,17 +66,32 @@ thead th {
     width: 2.5rem;
 }
 
-thead th a {
+.matrix thead th a {
     font-size: 1rem;
     display: block;
     transform: rotate(-90deg);
 }
 
-th {
+.matrix th {
     padding: 0.5rem;
+}
+
+table.matrix {
+    margin-top: 4rem;
+}
+
+.matrix, .matrix th, .matrix td {
+    border: none;
 }
 
 table {
     border-spacing: 0;
-    margin-top: 4rem;
+}
+
+table, th, td {
+    border: solid 0.5px #ddd;
+}
+
+th, td {
+    padding: 0.5rem;
 }

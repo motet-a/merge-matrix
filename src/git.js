@@ -95,7 +95,7 @@ const status = async () => {
 }
 
 const parseConflicts = (buffer, offset = 0) => {
-    const begin = buffer.indexOf('\n<<<<<<<', offset)
+    const begin = buffer.indexOf('<<<<<<<', offset)
     if (begin === -1) {
         return []
     }
@@ -124,12 +124,12 @@ const countConflictingLinesInFile = async path => {
     const stat = await promisify(fs.stat)(path)
 
     if (stat >= 100 * 1024) {
-        return 'tooLarge'
+        return 'fileTooLarge'
     }
 
     const buffer = await promisify(fs.readFile)(path)
     if (buffer.indexOf(0) !== -1) {
-        return 'binary'
+        return 'binaryFile'
     }
 
     const [a, b] = parseConflicts(buffer)
@@ -141,6 +141,8 @@ const countConflictingLinesInFile = async path => {
     return Math.max(a, b)
 }
 
+// If the number of conflicting lines can't be computed, a string
+// describing the reason is returned.
 const getConflictLineCount = async conflict => {
     const {path: relPath, reason} = conflict
 
@@ -148,33 +150,51 @@ const getConflictLineCount = async conflict => {
 
     switch (reason) {
         case 'U': {
-            const lineCount = await countConflictingLinesInFile(absPath)
-            return typeof lineCount === 'number' ? lineCount : 0
+            return await countConflictingLinesInFile(absPath)
         }
 
         case 'D': {
-            const lineCount = await countLinesInFile(absPath)
-            return typeof lineCount === 'number' ? lineCount : 0
+            return await countLinesInFile(absPath)
         }
     }
 
-    console.warn('unsupported conflict reason: ', reason)
-    console.warn(conflict)
-    return 0
+    return 'unsupportedConflictReason'
 }
 
 const getConflictsStats = async () => {
     const st = await status()
-    const conflicts = st
-        .filter(({a, b}) => a === 'U' || b === 'U')
-        .map(({a, b, path}) => a === 'U' ?
-                             {reason: b, path} : {reason: a, path})
 
-    let totalLineCount = 0
-    for (const conflict of conflicts) {
-        totalLineCount += await getConflictLineCount(conflict)
+    const withLinesPromises = st
+        .filter(({a, b}) => a === 'U' || b === 'U')
+        .map(async conflict => {
+            const reason = conflict.a === 'U' ? conflict.b : conflict.a
+            const {path} = conflict
+            const lineCount = await getConflictLineCount({reason, path})
+            return {
+                path,
+                reason,
+                lineCount,
+            }
+        })
+
+    const withLines = await Promise.all(withLinesPromises)
+
+    const zeroIfNonNumber = v =>
+        typeof v === 'number' ? v : 0
+
+    withLines.sort(
+        (a, b) => zeroIfNonNumber(b.lineCount) - zeroIfNonNumber(a.lineCount)
+    )
+
+    const lineCount = withLines.reduce(
+        (sum, conflict) => sum + conflict.lineCount,
+        0,
+    )
+
+    return {
+        lineCount,
+        status: withLines,
     }
-    return {lineCount: totalLineCount}
 }
 
 const merge = async (commit, base, newBranchName) => {

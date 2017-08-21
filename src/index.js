@@ -14,12 +14,6 @@ app.use(require('./render'))
 
 const repoHtmlUrl = 'https://github.com/' + config.owner + '/' + config.repo
 
-const getPullHtmlUrl = number =>
-    repoHtmlUrl + '/pull/' + number
-
-const getBranchHtmlUrl = name =>
-    repoHtmlUrl + '/branch/' + name
-
 const commitShaLike = string =>
     string.match(/^[a-f0-9]{8,}$/) && string.match(/[0-9]/)
 
