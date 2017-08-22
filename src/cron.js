@@ -38,18 +38,23 @@ const loadMatrix = async () => {
     return Matrix.fromJSON(JSON.parse(buffer.toString()))
 }
 
-const tick = async () => {
-    assert(!running)
-    running = true
-
-    console.log('update begin')
+const tickImpl = async () => {
     const oldMatrix = matrix || new Matrix()
     const newMatrix = oldMatrix.update(await detectConflicts())
     matrix = newMatrix
     await saveMatrix(matrix)
-    console.log('update end')
+}
 
-    running = false
+const tick = async () => {
+    assert(!running)
+    running = true
+    console.log('update begin')
+    try {
+        await tickImpl()
+    } finally {
+        running = false
+        console.log('update end')
+    }
 }
 
 const start = () => {
