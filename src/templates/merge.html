@@ -21,7 +21,7 @@
 <% } %>
 
 <p>
-    <a href="<%= $.compareUrl($.merge.aSha, $.merge.bSha) %>">
+    <a href="<%= $.getCompareUrl($.merge.aSha, $.merge.bSha) %>">
         Compare on GitHub
     </a>
 </p>
@@ -31,7 +31,7 @@
 </p>
 
 <p>
-    Base: <% $.linkify($.merge.a) %> at commit <% $.linkify($.merge.aSha) %>
+    Base: <% $.linkify($.merge.a) %> at commit <% $.linkify($.merge.aSha, {title: 'View commit on GitHub'}) %>
 </p>
 
 <% if ($.merge.conflicts) { %>

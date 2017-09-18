@@ -1,17 +1,13 @@
 <%
-$.linkify = text => {
-    const url = $.getNameUrl(text)
+$.linkify = (text) => {
+    const info = $.getLinkInfo(text)
 
-    if (!url) {
-        %><%= text %><%
-        return
-    }
-
-    const title = text.startsWith('#') && $.matrix ?
-                  $.matrix.getKeyTitle(text) : ''
+    const title =
+        info.type === 'pullRequest' && $.matrix ? $.matrix.getKeyTitle(text) :
+        'View on GitHub'
 
     %>
-        <a href="<%= url %>"
+        <a href="<%= info.url %>"
            title="<%= title %>"><%= text %></a>
     <%
 }

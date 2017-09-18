@@ -2,6 +2,7 @@
 const ejs = require('ejs')
 const path = require('path')
 
+const {getLinkInfo, getCompareUrl} = require('./links')
 const cron = require('./cron')
 
 
@@ -14,6 +15,8 @@ const render = (templateName, data) => {
             running: cron.running(),
         },
         matrix: cron.matrix(),
+        getLinkInfo,
+        getCompareUrl,
     }
 
     const options = {
