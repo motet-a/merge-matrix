@@ -8,6 +8,7 @@
 
     <% if ($.matrix && $.matrix.timestamp) { %>
         —
+        Updated at
         <% const timestamp = $.matrix.timestamp %>
 
         <time datetime="<%= (new Date(timestamp)).toJSON() %>">

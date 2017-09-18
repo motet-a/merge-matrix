@@ -1,6 +1,7 @@
 
 const Koa = require('koa')
 const router = require('koa-router')()
+const compress = require('koa-compress')
 
 const mergeLogs = require('./merge-logs')
 const cron = require('./cron')
@@ -9,6 +10,12 @@ const git = require('./git')
 const config = require('./config')
 
 const app = new Koa()
+
+app.use(compress({
+    filter: contentType => /text/i.test(contentType),
+    threshold: 2048,
+    flush: require('zlib').Z_SYNC_FLUSH,
+}))
 
 app.use(require('./render'))
 
