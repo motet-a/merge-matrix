@@ -1,7 +1,7 @@
 
 const assert = require('assert')
 
-// Removes some properties for persistance
+// Removes some properties for persistence
 const filterMergeResult = merge => {
     return {
         a: merge.a,
