@@ -8,6 +8,10 @@
 
     <% if ($.matrix && $.matrix.timestamp) { %>
         —
-        <%= (new Date($.matrix.timestamp)).toString() %>
+        <% const timestamp = $.matrix.timestamp %>
+
+        <time datetime="<%= (new Date(timestamp)).toJSON() %>">
+            <%= (new Date(timestamp)).toString() %>
+        </time>
     <% } %>
 </footer>
