@@ -40,7 +40,7 @@ const mergePullRequests = async (a, b) => {
     const branches = await git.getBranches()
 
     const getLocalPullBranchName = pull =>
-        typeof pull === 'string' ? pull : 'pull-' + pull.number
+        typeof pull === 'string' ? pull : `pull-${pull.number}`
 
     const getPullSha = pull => {
         const branchName = getLocalPullBranchName(pull)

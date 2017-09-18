@@ -66,7 +66,7 @@ const fetchBranches = async refSpecs => {
 
 const fetchPullRequests = async numbers => {
     const refSpecs = numbers
-        .map(number => 'pull/' + number + '/head:pull-' + number)
+        .map(number => `pull/${number}/head:pull-${number}`)
 
     console.log('fetching pull requests...')
     await fetchBranches(refSpecs)
@@ -201,7 +201,7 @@ const getConflictsStats = async () => {
 }
 
 const merge = async (commit, base, newBranchName) => {
-    console.log('merging ' + commit + ' into ' + base)
+    console.log(`merging ${commit} into ${base}`)
 
     await git([
         '-C', dir,

@@ -12,18 +12,18 @@ const app = new Koa()
 
 app.use(require('./render'))
 
-const repoHtmlUrl = 'https://github.com/' + config.owner + '/' + config.repo
+const repoHtmlUrl = `https://github.com/${config.owner}/${config.repo}`
 
 const commitShaLike = string =>
     string.match(/^[a-f0-9]{8,}$/) && string.match(/[0-9]/)
 
 const getNameUrl = name =>
-    name.match(/^#[0-9]+$/) ? repoHtmlUrl + '/pull/' + name.slice(1) :
-    commitShaLike(name) ? repoHtmlUrl + '/commit/' + name :
-    repoHtmlUrl + '/tree/' + name
+    name.match(/^#[0-9]+$/) ? `${repoHtmlUrl}/pull/${name.slice(1)}` :
+    commitShaLike(name) ? `${repoHtmlUrl}/commit/${name}` :
+    `${repoHtmlUrl}/tree/${name}`
 
 const compareUrl = (a, b) =>
-    repoHtmlUrl + '/compare/' + a + '...' + b
+    `${repoHtmlUrl}/compare/${a}...${b}`
 
 
 router

@@ -8,7 +8,8 @@
     <td class="<%= merge.code ? 'failed' : 'successful' %>"
         style="<%= $.getCellStyle(merge) %>">
         <a href="/merge/<%= merge.aSha %>/<%= merge.bSha %>"
-           title="<%= merge.a + ' — ' + $.matrix.getKeyTitle(a) + '\n' + merge.b + ' — ' + $.matrix.getKeyTitle(b) %>">
+           title="<%= `${merge.a} — ${$.matrix.getKeyTitle(a)}\n` +
+                      `${merge.b} — ${$.matrix.getKeyTitle(b)}` %>">
             <%= merge.conflicts ? merge.conflicts.lineCount : '' %>
         </a>
     </td>

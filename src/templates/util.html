@@ -31,7 +31,7 @@ $.getCellStyle = merge => {
 
     const foreground = backgroundOpacity > 0.4 ? 'white' : '#444'
 
-    return 'background: rgba(244, 83, 66, ' + backgroundOpacity + ');' +
-           'color: ' + foreground + ';'
+    return `background: rgba(244, 83, 66, ${backgroundOpacity});` +
+           `color: ${foreground};`
 }
 %>
