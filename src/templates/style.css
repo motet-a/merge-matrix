@@ -28,6 +28,10 @@ footer {
     color: #666;
 }
 
+footer a {
+    color: inherit;
+}
+
 pre {
     background: #eee;
     padding: 1rem;
