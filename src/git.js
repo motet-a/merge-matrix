@@ -64,6 +64,21 @@ const fetchBranches = async refSpecs => {
     ].concat(refSpecs))
 }
 
+const pullBranch = async (remote, branch) => {
+    await git([
+        '-C', dir,
+        'checkout',
+        '-f',
+        branch,
+    ])
+
+    await git([
+        '-C', dir,
+        'pull',
+        remote, branch,
+    ])
+}
+
 const fetchPullRequests = async numbers => {
     const refSpecs = numbers
         .map(number => `pull/${number}/head:pull-${number}`)
@@ -253,6 +268,7 @@ const getBranches = async () => {
 module.exports = {
     bootstrap,
     fetchPullRequests,
+    pullBranch,
     getBranches,
     merge,
 }

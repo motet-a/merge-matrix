@@ -86,6 +86,8 @@ const detectConflicts = async () => {
     const pulls = (await github.getPullRequests())
         .filter(pull => !isPullRequestIgnored(pull.number))
 
+    await git.pullBranch('origin', [repo.default_branch])
+
     const pairs = getMergeCombinations(pulls, repo.default_branch)
 
     await git.fetchPullRequests(
