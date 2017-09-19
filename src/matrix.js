@@ -25,7 +25,7 @@ const indexMergeResults = mergeResults => {
 
 // Consider this class as immutable
 class Matrix {
-    construct() {
+    constructor() {
         this._pulls = []
         this._branchNames = []
 

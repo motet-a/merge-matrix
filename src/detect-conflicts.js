@@ -105,10 +105,8 @@ const detectConflicts = async oldMatrix => {
     )
 
     const oldMatrixBranchNames =
-        oldMatrix ? (
-            Object.values(oldMatrix.matrix)
-                  .map(merge => merge.aSha + '-' + merge.bSha)
-        ) : []
+        Object.values(oldMatrix.matrix)
+              .map(merge => merge.aSha + '-' + merge.bSha)
 
     const existingBranches = await git.getBranches()
 
