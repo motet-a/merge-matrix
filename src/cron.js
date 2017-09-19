@@ -41,7 +41,7 @@ const loadMatrix = async () => {
 
 const tickImpl = async () => {
     const oldMatrix = matrix || new Matrix()
-    const newMatrix = oldMatrix.update(await detectConflicts())
+    const newMatrix = oldMatrix.update(await detectConflicts(oldMatrix))
     matrix = newMatrix
     await saveMatrix(matrix)
 }

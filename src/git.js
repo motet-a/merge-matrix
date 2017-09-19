@@ -65,7 +65,9 @@ const fetchBranches = async refSpecs => {
     ].concat(refSpecs))
 }
 
-const pullBranch = async (remote, branch) => {
+const pullBranch = async branch => {
+    await fetchBranches([branch])
+
     await git([
         '-C', dir,
         'checkout',
@@ -75,14 +77,15 @@ const pullBranch = async (remote, branch) => {
 
     await git([
         '-C', dir,
-        'pull',
-        remote, branch,
+        'reset',
+        '--hard',
+        'origin/' + branch,
     ])
 }
 
-const pullBranches = async (remote, branches) => {
+const pullBranches = async branches => {
     for (const branch of branches) {
-        await pullBranch(remote, branch)
+        await pullBranch(branch)
     }
 }
 
@@ -229,7 +232,7 @@ const merge = async (commit, base, newBranchName) => {
         '-C', dir,
         'checkout',
         '-f',
-        '-b', newBranchName,
+        '-B', newBranchName,
         base,
     ])
 

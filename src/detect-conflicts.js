@@ -38,11 +38,13 @@ const getMergeCombinations = (pulls, branchNames) => {
 //   - a pull request object
 //   - a branch name
 //
-// `existingBranches` must be the list of the existing branches in the
-// cloned repository
+// `existingBranches` must be the list describing the existing
+// branches in the cloned repository. Each item must be an object
+// with the signature `{name, sha}`.
 //
 // Returns undefined if the existing result branch is up-to-date.
-const mergeBranchesOrPulls = async (a, b, existingBranches) => {
+const mergeBranchesOrPulls = async (a, b, existingBranches, oldMatrixBranchNames) => {
+
     const getLocalPullBranchName = branchOrPull =>
         typeof branchOrPull === 'string' ? branchOrPull :
         `pull-${branchOrPull.number}`
@@ -61,7 +63,8 @@ const mergeBranchesOrPulls = async (a, b, existingBranches) => {
 
     const newBranchName = aSha + '-' + bSha
 
-    if (existingBranches.find(branch => branch.name === newBranchName)) {
+    if (existingBranches.find(branch => branch.name === newBranchName) &&
+        oldMatrixBranchNames.includes(newBranchName)) {
         return
     }
 
@@ -87,13 +90,13 @@ const isPullRequestIgnored = number =>
     config.ignore.includes('#' + number)
 
 // This function is not reentrant.
-const detectConflicts = async () => {
+const detectConflicts = async oldMatrix => {
     const repo = await github.getRepo()
 
     const pulls = (await github.getPullRequests())
         .filter(pull => !isPullRequestIgnored(pull.number))
 
-    await git.pullBranches('origin', config.branches)
+    await git.pullBranches(config.branches)
 
     const pairs = getMergeCombinations(pulls, config.branches)
 
@@ -101,13 +104,21 @@ const detectConflicts = async () => {
         pulls.map(({number}) => number)
     )
 
-    const mergeResults = []
+    const oldMatrixBranchNames = Object.values(oldMatrix.matrix)
+        .map(merge => merge.aSha + '-' + merge.bSha)
 
     const existingBranches = await git.getBranches()
 
+    const mergeResults = []
+
     console.log('merging...')
     for (const [a, b] of pairs) {
-        const result = await mergeBranchesOrPulls(a, b, existingBranches)
+        const result = await mergeBranchesOrPulls(
+            a, b,
+            existingBranches,
+            oldMatrixBranchNames,
+        )
+
         if (result) {
             const {mergeResult} = result
             mergeResults.push({
