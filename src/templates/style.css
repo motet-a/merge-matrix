@@ -42,11 +42,6 @@ pre {
     text-align: center;
 }
 
-.matrix tr:hover td.successful,
-.matrix tr:hover td.empty {
-    background: #eee;
-}
-
 .matrix td {
     padding: 0;
 }
