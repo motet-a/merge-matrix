@@ -66,22 +66,28 @@ pre {
     font-size: 0;
     line-height: 0;
     max-width: 0;
-    height: 2.5rem;
-    width: 2.5rem;
+    position: relative;
+    height: 8rem;
+    vertical-align: top;
 }
 
 .matrix thead th a {
-    font-size: 1rem;
+    position: absolute;
     display: block;
-    transform: rotate(-90deg);
+    font-size: 1rem;
+    white-space: nowrap;
+    transform: translateX(-50%) rotate(-90deg) translate(50%);
+    left: 50%;
+    top: calc(100% - 0.5rem);
+}
+
+.matrix tbody tr th:first-child {
+    white-space: nowrap;
+    text-align: right;
 }
 
 .matrix th {
     padding: 0.5rem;
-}
-
-table.matrix {
-    margin-top: 4rem;
 }
 
 .matrix, .matrix th, .matrix td {

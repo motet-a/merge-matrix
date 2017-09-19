@@ -21,12 +21,14 @@ const getPairs = map => {
     return Array.from(pairs.values())
 }
 
-const getMergeCombinations = (pulls, baseBranchName) => {
+const getMergeCombinations = (pulls, branchNames) => {
     const map = new Map()
     for (const pull of pulls) {
         map.set(pull.number, pull)
     }
-    map.set(baseBranchName, baseBranchName)
+    for (const branchName of branchNames) {
+        map.set(branchName, branchName)
+    }
 
     return getPairs(map)
 }
@@ -86,9 +88,9 @@ const detectConflicts = async () => {
     const pulls = (await github.getPullRequests())
         .filter(pull => !isPullRequestIgnored(pull.number))
 
-    await git.pullBranch('origin', [repo.default_branch])
+    await git.pullBranches('origin', config.branches)
 
-    const pairs = getMergeCombinations(pulls, repo.default_branch)
+    const pairs = getMergeCombinations(pulls, config.branches)
 
     await git.fetchPullRequests(
         pulls.map(({number}) => number)
@@ -119,6 +121,7 @@ const detectConflicts = async () => {
         repo,
         pulls,
         mergeResults,
+        branchNames: config.branches,
     }
 
     return result

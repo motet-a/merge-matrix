@@ -41,7 +41,7 @@ class Matrix {
         assert(result.pulls)
         assert(result.timestamp)
         m._pulls = result.pulls
-        m._branchNames = [result.repo.default_branch]
+        m._branchNames = result.branchNames || []
         m._matrix = Object.assign(
             Object.create(null),
             this.matrix,

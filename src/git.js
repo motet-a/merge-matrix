@@ -79,6 +79,12 @@ const pullBranch = async (remote, branch) => {
     ])
 }
 
+const pullBranches = async (remote, branches) => {
+    for (const branch of branches) {
+        await pullBranch(remote, branch)
+    }
+}
+
 const fetchPullRequests = async numbers => {
     const refSpecs = numbers
         .map(number => `pull/${number}/head:pull-${number}`)
@@ -269,6 +275,7 @@ module.exports = {
     bootstrap,
     fetchPullRequests,
     pullBranch,
+    pullBranches,
     getBranches,
     merge,
 }
