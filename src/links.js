@@ -1,3 +1,4 @@
+'use strict'
 
 const config = require('./config')
 
@@ -36,7 +37,7 @@ const getLinkInfo = name => {
 const getCompareUrl = (a, b) =>
     `${repoHtmlUrl}/compare/${a}...${b}`
 
-module.exports = {
-    getCompareUrl,
-    getLinkInfo,
-}
+    module.exports = {
+        getCompareUrl,
+        getLinkInfo,
+    }

@@ -1,3 +1,4 @@
+'use strict'
 
 const {promisify} = require('util')
 const fs = require('fs')
@@ -15,7 +16,7 @@ const save = async results => {
         await promisify(fs.mkdir)(dirPath)
     }
 
-    for (result of results) {
+    for (const result of results) {
         const fileName = result.aSha + '-' + result.bSha
         const compressed = await promisify(zlib.gzip)(JSON.stringify(result))
         await promisify(fs.writeFile)(

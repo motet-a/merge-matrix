@@ -1,3 +1,4 @@
+'use strict'
 
 const Koa = require('koa')
 const router = require('koa-router')()
@@ -68,12 +69,12 @@ process.on('SIGTERM', stop)
 process.on('SIGINT', stop)
 
 git
-       .bootstrap()
-       .then(() => {
-           server = app.listen(8000)
-       })
-       .then(cron.bootstrap)
-       .then(cron.start)
-       .catch(error => {
-           console.error(error)
+    .bootstrap()
+    .then(() => {
+        server = app.listen(8000)
+    })
+    .then(cron.bootstrap)
+    .then(cron.start)
+    .catch(error => {
+        console.error(error)
     })
