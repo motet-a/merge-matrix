@@ -38,16 +38,20 @@ const getMergeCombinations = (pulls, branchNames) => {
 //   - a pull request object
 //   - a branch name
 //
+// `existingBranches` must be the list of the existing branches in the
+// cloned repository
+//
 // Returns undefined if the existing result branch is up-to-date.
-const mergePullRequests = async (a, b) => {
-    const branches = await git.getBranches()
-
-    const getLocalPullBranchName = pull =>
-        typeof pull === 'string' ? pull : `pull-${pull.number}`
+const mergeBranchesOrPulls = async (a, b, existingBranches) => {
+    const getLocalPullBranchName = branchOrPull =>
+        typeof branchOrPull === 'string' ? branchOrPull :
+        `pull-${branchOrPull.number}`
 
     const getPullSha = pull => {
         const branchName = getLocalPullBranchName(pull)
-        const branch = branches.find(branch => branch.name === branchName)
+        const branch = existingBranches.find(
+            branch => branch.name === branchName
+        )
         assert(branch)
         return branch.sha.slice(0, 16)
     }
@@ -57,7 +61,7 @@ const mergePullRequests = async (a, b) => {
 
     const newBranchName = aSha + '-' + bSha
 
-    if (branches.find(branch => branch.name === newBranchName)) {
+    if (existingBranches.find(branch => branch.name === newBranchName)) {
         return
     }
 
@@ -99,8 +103,11 @@ const detectConflicts = async () => {
 
     const mergeResults = []
 
+    const existingBranches = await git.getBranches()
+
+    console.log('merging...')
     for (const [a, b] of pairs) {
-        const result = await mergePullRequests(a, b)
+        const result = await mergeBranchesOrPulls(a, b, existingBranches)
         if (result) {
             const {mergeResult} = result
             mergeResults.push({
@@ -114,6 +121,7 @@ const detectConflicts = async () => {
             })
         }
     }
+    console.log('merged.')
 
     await mergeLogs.save(mergeResults)
 

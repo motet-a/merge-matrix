@@ -54,6 +54,8 @@ app.use(router.routes())
 let server
 
 const stop = () => {
+    console.log('exiting…')
+
     if (server) {
         server.close(() => {
             server = null
@@ -67,6 +69,7 @@ const stop = () => {
 
 process.on('SIGTERM', stop)
 process.on('SIGINT', stop)
+process.on('SIGQUIT', stop)
 
 git
     .bootstrap()
