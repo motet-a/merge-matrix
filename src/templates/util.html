@@ -30,4 +30,13 @@ $.getCellStyle = merge => {
     return `background: rgba(244, 83, 66, ${backgroundOpacity});` +
            `color: ${foreground};`
 }
+
+$.getBranchOrPullDescr = (branchOrPullName) => {
+    const title = $.matrix.getKeyTitle(branchOrPullName)
+    return branchOrPullName + (title ? ' — ' + title : '')
+}
+
+$.defaultBranch = $.matrix.branchNames.length ? $.matrix.branchNames[0] :
+    'master'
+
 %>

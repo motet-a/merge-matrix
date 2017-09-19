@@ -51,7 +51,11 @@
         <tbody>
             <% for (const file of status) { %>
                 <tr>
-                    <td><%= file.path %></td>
+                    <td>
+                        <a href="<%= `${$.repoHtmlUrl}/blob/${$.defaultBranch}/${file.path}` %>">
+                            <%= file.path %>
+                        </a>
+                    </td>
                     <td><%= file.reason %></td>
                     <td><%= file.lineCount %></td>
                 </tr>
