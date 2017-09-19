@@ -36,7 +36,7 @@ $.getBranchOrPullDescr = (branchOrPullName) => {
     return branchOrPullName + (title ? ' — ' + title : '')
 }
 
-$.defaultBranch = $.matrix.branchNames.length ? $.matrix.branchNames[0] :
-    'master'
+$.defaultBranch = $.matrix && $.matrix.branchNames.length ?
+    $.matrix.branchNames[0] : 'master'
 
 %>
