@@ -27,10 +27,10 @@ const getPullRequests = async () => {
         owner: config.owner,
         repo: config.repo,
         state: 'open',
-        base: repo.default_branch,
         per_page: 100,
     })
-    return res.data
+
+    return res.data.filter(pr => config.branches.includes(pr.base.ref))
 }
 
 module.exports = {
