@@ -12,6 +12,20 @@ const {countLinesInBuffer} = countLinesInFile
 
 const dir = path.join(__dirname, '..', 'var', 'clone')
 
+// When the output buffer overflows, an exception is raised with the whole
+// `stdin` and the whole `stdout`. These fields can be really huge and fill
+// the logs quickly, so it is much safer to limit their length.
+const maxOutputLengthInExceptions = 1024
+
+const limitFieldLength = (exception, fieldName) => {
+    const field = exception[fieldName]
+    if (typeof field === 'string' && field.length > maxOutputLengthInExceptions) {
+        const begin = field.slice(0, maxOutputLengthInExceptions)
+        const end = field.slice(field.length - maxOutputLengthInExceptions)
+        exception[fieldName] = begin + ' … ' + end
+    }
+}
+
 const git = async (args, options) => {
     const env = {
         // Sometimes some Git commands ask for a password.
@@ -21,21 +35,17 @@ const git = async (args, options) => {
         GIT_ASKPASS: 'echo',
     }
 
-    try {
-        return await exec(
-            'git',
-            args,
-            Object.assign(
-                {
-                    env,
-                    maxBuffer: 2 * 1024 * 1024,
-                },
-                options,
-            ),
-        )
-    } catch (error) {
-        throw error
-    }
+    return await exec(
+        'git',
+        args,
+        Object.assign(
+            {
+                env,
+                maxBuffer: 2 * 1024 * 1024,
+            },
+            options,
+        ),
+    )
 }
 
 const bootstrap = async () => {
@@ -254,6 +264,9 @@ const merge = async (commit, base, newBranchName) => {
                 'merge',
                 '--abort',
             ])
+        } else {
+            limitFieldLength(error, 'stdout')
+            limitFieldLength(error, 'stderr')
         }
 
         throw error
